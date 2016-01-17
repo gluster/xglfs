@@ -30,9 +30,15 @@ void* xglfs_init(struct fuse_conn_info* _connection)
 	debug("%s", __func__);
 
 	XGLFS_STATE->fs = glfs_new(XGLFS_STATE->volume);
-	glfs_set_logging(XGLFS_STATE->fs, XGLFS_STATE->glfs_logfile, 7);
-	glfs_set_volfile_server(XGLFS_STATE->fs, XGLFS_STATE->protocol, XGLFS_STATE->server, XGLFS_STATE->port);
-	glfs_init(XGLFS_STATE->fs);
+	if (unlikely(!XGLFS_STATE->fs))
+		panic("Unable to create GlusterFS instance");
+	if (unlikely(glfs_set_logging(XGLFS_STATE->fs, XGLFS_STATE->glfs_logfile, 7)))
+		panic("Unable to set GlusterFS logging");
+	if (unlikely(glfs_set_volfile_server(
+		XGLFS_STATE->fs, XGLFS_STATE->protocol, XGLFS_STATE->server, XGLFS_STATE->port)))
+		panic("Unable to set GlusterFS volume file server");
+	if (unlikely(glfs_init(XGLFS_STATE->fs)))
+		panic("Unable to initialize GlusterFS");
 
 	return XGLFS_STATE;
 }
