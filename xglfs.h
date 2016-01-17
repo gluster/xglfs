@@ -27,7 +27,7 @@ struct xglfs_state
 	glfs_t* fs;
 	char* protocol;
 	char* server;
-	unsigned short int port;
+	int port;
 	char* volume;
 	char* glfs_logfile;
 	int glfs_verbosity;
