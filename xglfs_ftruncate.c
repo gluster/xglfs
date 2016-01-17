@@ -30,7 +30,7 @@ int xglfs_ftruncate(const char* _path, off_t _offset, struct fuse_file_info* _in
 	(void)_path;
 	int ret = 0;
 
-	ret = glfs_ftruncate((glfs_fd_t*)(uintptr_t)_info->fh, _offset);
+	ret = glfs_ftruncate(FH_TO_FD(_info->fh), _offset);
 	if (unlikely(ret < 0))
 		return -errno;
 

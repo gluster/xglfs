@@ -31,7 +31,7 @@ int xglfs_lock(const char* _path, struct fuse_file_info* _info, int _cmd, struct
 
 	int ret = 0;
 
-	ret = glfs_posix_lock((glfs_fd_t*)(uintptr_t)_info->fh, _cmd, _flock);
+	ret = glfs_posix_lock(FH_TO_FD(_info->fh), _cmd, _flock);
 	if (unlikely(ret < 0))
 		return -errno;
 
