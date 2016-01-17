@@ -1,0 +1,11 @@
+build_clang_analyzer
+build_debug
+build_release
+build_clang
+build_icc
+*.o
+*.kate-swp
+*.swp
+*.bak
+*~
+gmon.out
