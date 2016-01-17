@@ -25,9 +25,9 @@
 
 void* xglfs_init(struct fuse_conn_info* _connection)
 {
-	debug("%s", __func__);
-
 	pfcq_debug_init(XGLFS_STATE->verbose, XGLFS_STATE->debug, XGLFS_STATE->syslog);
+
+	debug("%s", __func__);
 
 	XGLFS_STATE->fs = glfs_new(XGLFS_STATE->volume);
 	glfs_set_logging(XGLFS_STATE->fs, XGLFS_STATE->glfs_logfile, 7);
