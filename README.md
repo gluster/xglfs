@@ -45,11 +45,11 @@ Usage
 
 Syntax:
 
-`xglfs <[tcp|udp]:server:[port]:volume:[GlusterFS_logfile]:[verbose]:[debug]:[syslog]:[foreground]> <mountpoint>`
+`xglfs <[tcp|udp]:server:[port]:volume:[GlusterFS_logfile]:[GlusterFS_verbosity]:[verbose]:[debug]:[syslog]:[foreground]> <mountpoint>`
 
 Typical usage:
 
-`xglfs :glusterfs.example.com::bigvolume::::1: /mnt/bigvolume`
+`xglfs :glusterfs.example.com::bigvolume:::::1: /mnt/bigvolume`
 
 Distribution and Contribution
 -----------------------------

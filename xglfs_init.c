@@ -32,7 +32,7 @@ void* xglfs_init(struct fuse_conn_info* _connection)
 	XGLFS_STATE->fs = glfs_new(XGLFS_STATE->volume);
 	if (unlikely(!XGLFS_STATE->fs))
 		panic("Unable to create GlusterFS instance");
-	if (unlikely(glfs_set_logging(XGLFS_STATE->fs, XGLFS_STATE->glfs_logfile, GLFS_DEFAULT_VERBOSITY)))
+	if (unlikely(glfs_set_logging(XGLFS_STATE->fs, XGLFS_STATE->glfs_logfile, XGLFS_STATE->glfs_verbosity)))
 		panic("Unable to set GlusterFS logging");
 	if (unlikely(glfs_set_volfile_server(
 		XGLFS_STATE->fs, XGLFS_STATE->protocol, XGLFS_STATE->server, XGLFS_STATE->port)))

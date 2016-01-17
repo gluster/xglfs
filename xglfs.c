@@ -71,8 +71,8 @@ struct fuse_operations xglfs_ops =
 
 __attribute__((noreturn)) static void xglfs_usage(void)
 {
-	fprintf(stderr, "Usage: xglfs <[tcp|udp]:server:[port]:volume:[GlusterFS_logfile]:[verbose]:[debug]:[syslog]:[foreground]> <mountpoint>\n");
-	fprintf(stderr, "Example: xglfs :glusterfs.example.com::bigvolume::::1: /mnt/bigvolume\n");
+	fprintf(stderr, "Usage: xglfs <[tcp|udp]:server:[port]:volume:[GlusterFS_logfile]:[GlusterFS_verbosity]:[verbose]:[debug]:[syslog]:[foreground]> <mountpoint>\n");
+	fprintf(stderr, "Example: xglfs :glusterfs.example.com::bigvolume:::::1: /mnt/bigvolume\n");
 	exit(EX_USAGE);
 }
 
@@ -123,11 +123,23 @@ int main(int _argc, char** _argv)
 	if (strcmp(volume, "") == 0)
 		xglfs_usage();
 	xglfs_state->volume = pfcq_strdup(volume);
+
 	char* glfs_logfile = strsep(&source_i, ":");
 	if (strcmp(glfs_logfile, "") == 0)
 		xglfs_state->glfs_logfile = pfcq_strdup(DEV_NULL);
 	else
 		xglfs_state->glfs_logfile = pfcq_strdup(glfs_logfile);
+
+	char* glfs_verbosity = strsep(&source_i, ":");
+	if (strcmp(glfs_verbosity, "") == 0)
+		xglfs_state->glfs_verbosity = GLFS_DEFAULT_VERBOSITY;
+	else
+	{
+		if (!pfcq_isnumber(glfs_verbosity))
+			xglfs_usage();
+		else
+			xglfs_state->glfs_verbosity = strtol(glfs_verbosity, NULL, 10);
+	}
 
 	char* be_verbose = strsep(&source_i, ":");
 	if (strcmp(be_verbose, "") == 0)

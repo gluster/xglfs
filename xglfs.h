@@ -30,6 +30,7 @@ struct xglfs_state
 	unsigned short int port;
 	char* volume;
 	char* glfs_logfile;
+	int glfs_verbosity;
 	unsigned short int verbose;
 	unsigned short int debug;
 	unsigned short int syslog;
