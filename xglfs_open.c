@@ -36,7 +36,7 @@ int xglfs_open(const char* _pathname, struct fuse_file_info* _info)
 	if (unlikely(!fd))
 		return -errno;
 
-	_info->fh = (uint64_t)(uintptr_t)fd;
+	_info->fh = FD_TO_FH(fd);
 
 	return 0;
 }
