@@ -32,6 +32,11 @@ int xglfs_readlink(const char* _path, char* _buf, size_t _bufsize)
 	ret = glfs_readlink(XGLFS_STATE->fs, _path, _buf, _bufsize);
 	if (unlikely(ret < 0))
 		ret = -errno;
+	else
+	{
+		_buf[ret] = '\0';
+		ret = 0;
+	}
 
 	XGLFS_FOP_RET;
 	XGLFS_FOP_END;
