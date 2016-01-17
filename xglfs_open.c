@@ -25,8 +25,9 @@
 
 int xglfs_open(const char* _pathname, struct fuse_file_info* _info)
 {
-	debug("%s", __func__);
+	XGLFS_FOP_START;
 
+	int ret = 0;
 	glfs_fd_t* fd = NULL;
 
 	if ((_info->flags & O_CREAT) == O_CREAT)
@@ -34,10 +35,14 @@ int xglfs_open(const char* _pathname, struct fuse_file_info* _info)
 	else
 		fd = glfs_open(XGLFS_STATE->fs, _pathname, _info->flags);
 	if (unlikely(!fd))
-		return -errno;
+		ret = -errno;
 
-	_info->fh = FD_TO_FH(fd);
+	if (likely(ret == 0))
+		_info->fh = FD_TO_FH(fd);
 
-	return 0;
+	XGLFS_FOP_RET;
+	XGLFS_FOP_END;
+
+	return ret;
 }
 

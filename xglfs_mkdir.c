@@ -26,13 +26,16 @@
 
 int xglfs_mkdir(const char* _path, mode_t _mode)
 {
-	debug("%s", __func__);
+	XGLFS_FOP_START;
 
 	int ret = 0;
 
 	ret = glfs_mkdir_safe(XGLFS_STATE->fs, _path, _mode);
 	if (unlikely(ret < 0))
-		return -errno;
+		ret = -errno;
+
+	XGLFS_FOP_RET;
+	XGLFS_FOP_END;
 
 	return ret;
 }

@@ -25,13 +25,16 @@
 
 int xglfs_readlink(const char* _path, char* _buf, size_t _bufsize)
 {
-	debug("%s", __func__);
+	XGLFS_FOP_START;
 
 	int ret = 0;
 
 	ret = glfs_readlink(XGLFS_STATE->fs, _path, _buf, _bufsize);
 	if (unlikely(ret < 0))
-		return -errno;
+		ret = -errno;
+
+	XGLFS_FOP_RET;
+	XGLFS_FOP_END;
 
 	return ret;
 }

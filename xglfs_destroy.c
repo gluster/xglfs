@@ -25,7 +25,7 @@
 
 void xglfs_destroy(void* _userdata)
 {
-	debug("%s", __func__);
+	XGLFS_FOP_START;
 
 	glfs_fini(XGLFS_STATE->fs);
 
@@ -38,6 +38,8 @@ void xglfs_destroy(void* _userdata)
 	pfcq_free(xglfs_state);
 
 	pfcq_debug_done();
+
+	XGLFS_FOP_END;
 
 	return;
 }

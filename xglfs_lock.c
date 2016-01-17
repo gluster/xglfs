@@ -25,7 +25,7 @@
 
 int xglfs_lock(const char* _path, struct fuse_file_info* _info, int _cmd, struct flock* _flock)
 {
-	debug("%s", __func__);
+	XGLFS_FOP_START;
 
 	(void)_path;
 
@@ -33,7 +33,10 @@ int xglfs_lock(const char* _path, struct fuse_file_info* _info, int _cmd, struct
 
 	ret = glfs_posix_lock(FH_TO_FD(_info->fh), _cmd, _flock);
 	if (unlikely(ret < 0))
-		return -errno;
+		ret = -errno;
+
+	XGLFS_FOP_RET;
+	XGLFS_FOP_END;
 
 	return ret;
 }

@@ -25,7 +25,7 @@
 
 int xglfs_utimens(const char* _path, const struct timespec _tv[2])
 {
-	debug("%s", __func__);
+	XGLFS_FOP_START;
 
 	int ret = 0;
 	struct timespec tv[2];
@@ -34,7 +34,10 @@ int xglfs_utimens(const char* _path, const struct timespec _tv[2])
 
 	ret = glfs_lutimens(XGLFS_STATE->fs, _path, tv);
 	if (unlikely(ret < 0))
-		return -errno;
+		ret = -errno;
+
+	XGLFS_FOP_RET;
+	XGLFS_FOP_END;
 
 	return ret;
 }

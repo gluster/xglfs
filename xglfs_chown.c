@@ -25,13 +25,16 @@
 
 int xglfs_chown(const char* _path, uid_t _owner, gid_t _group)
 {
-	debug("%s", __func__);
+	XGLFS_FOP_START;
 
 	int ret = 0;
 
 	ret = glfs_chown(XGLFS_STATE->fs, _path, _owner, _group);
 	if (unlikely(ret < 0))
-		return -errno;
+		ret = -errno;
+
+	XGLFS_FOP_RET;
+	XGLFS_FOP_END;
 
 	return ret;
 }

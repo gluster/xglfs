@@ -27,7 +27,7 @@ void* xglfs_init(struct fuse_conn_info* _connection)
 {
 	pfcq_debug_init(XGLFS_STATE->verbose, XGLFS_STATE->debug, XGLFS_STATE->syslog);
 
-	debug("%s", __func__);
+	XGLFS_FOP_START;
 
 	XGLFS_STATE->fs = glfs_new(XGLFS_STATE->volume);
 	if (unlikely(!XGLFS_STATE->fs))
@@ -39,6 +39,8 @@ void* xglfs_init(struct fuse_conn_info* _connection)
 		panic("Unable to set GlusterFS volume file server");
 	if (unlikely(glfs_init(XGLFS_STATE->fs)))
 		panic("Unable to initialize GlusterFS");
+
+	XGLFS_FOP_END;
 
 	return XGLFS_STATE;
 }

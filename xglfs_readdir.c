@@ -25,18 +25,29 @@
 
 int xglfs_readdir(const char* _path, void* _buf, fuse_fill_dir_t _filler, off_t _offset, struct fuse_file_info* _info)
 {
-	debug("%s", __func__);
+	XGLFS_FOP_START;
+
+	int ret = 0;
 
 	struct dirent* de = glfs_readdir(FH_TO_FD(_info->fh));
 	if (unlikely(!de))
-		return -errno;
+		ret = -errno;
 
-	do
+	if (likely(ret == 0))
 	{
-		if (unlikely(_filler(_buf, de->d_name, NULL, 0) != 0))
-			return -ENOMEM;
-	} while (likely((de = glfs_readdir(FH_TO_FD(_info->fh))) != NULL));
+		do
+		{
+			if (unlikely(_filler(_buf, de->d_name, NULL, 0) != 0))
+			{
+				ret = -ENOMEM;
+				break;
+			}
+		} while (likely((de = glfs_readdir(FH_TO_FD(_info->fh))) != NULL));
+	}
 
-	return 0;
+	XGLFS_FOP_RET;
+	XGLFS_FOP_END;
+
+	return ret;
 }
 

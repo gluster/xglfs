@@ -21,6 +21,7 @@
 
 #include <fuse.h>
 #include <glusterfs/api/glfs.h>
+#include <string.h>
 
 struct xglfs_state
 {
@@ -39,4 +40,20 @@ struct xglfs_state
 #define XGLFS_STATE	((struct xglfs_state*)fuse_get_context()->private_data)
 #define FH_TO_FD(A)	((glfs_fd_t*)(uintptr_t)(A))
 #define FD_TO_FH(A)	((uint64_t)(uintptr_t)(A))
+
+#define XGLFS_FOP_START												\
+	do																\
+	{																\
+		debug("START: %s\n", __func__);								\
+	} while (0)
+#define XGLFS_FOP_END												\
+	do																\
+	{																\
+		debug("END: %s\n", __func__);								\
+	} while (0)
+#define XGLFS_FOP_RET												\
+	do																\
+	{																\
+		debug("RET: %s = %d (%s)\n", __func__, ret, strerror(ret));	\
+	} while (0)
 

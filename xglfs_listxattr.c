@@ -25,13 +25,16 @@
 
 int xglfs_listxattr(const char* _path, char* _list, size_t _size)
 {
-	debug("%s", __func__);
+	XGLFS_FOP_START;
 
 	int ret = 0;
 
 	ret = glfs_llistxattr(XGLFS_STATE->fs, _path, _list, _size);
 	if (unlikely(ret < 0))
-		return -errno;
+		ret = -errno;
+
+	XGLFS_FOP_RET;
+	XGLFS_FOP_END;
 
 	return ret;
 }

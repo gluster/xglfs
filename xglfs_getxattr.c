@@ -25,13 +25,16 @@
 
 int xglfs_getxattr(const char* _path, const char* _name, char* _value, size_t _size)
 {
-	debug("%s", __func__);
+	XGLFS_FOP_START;
 
 	int ret = 0;
 
 	ret = glfs_lgetxattr(XGLFS_STATE->fs, _path, _name, _value, _size);
 	if (unlikely(ret < 0))
-		return -errno;
+		ret = -errno;
+
+	XGLFS_FOP_RET;
+	XGLFS_FOP_END;
 
 	return ret;
 }

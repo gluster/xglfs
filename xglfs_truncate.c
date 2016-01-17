@@ -25,7 +25,7 @@
 
 int xglfs_truncate(const char* _path, off_t _length)
 {
-	debug("%s", __func__);
+	XGLFS_FOP_START;
 
 	int ret = 0;
 
@@ -35,19 +35,27 @@ int xglfs_truncate(const char* _path, off_t _length)
 	// Workaround:
 	glfs_fd_t* fd = glfs_open(XGLFS_STATE->fs, _path, O_CREAT | O_WRONLY);
 	if (unlikely(!fd))
-		return -errno;
+		ret = -errno;
 
-	ret = glfs_ftruncate(fd, _length);
-	if (unlikely(ret < 0))
+	if (likely(ret == 0))
 	{
-		int saved_errno = errno;
-		glfs_close(fd);
-		return -saved_errno;
+		ret = glfs_ftruncate(fd, _length);
+		if (unlikely(ret < 0))
+		{
+			int saved_errno = errno;
+			glfs_close(fd);
+			ret = -saved_errno;
+		} else
+		{
+			ret = glfs_close(fd);
+			if (unlikely(ret < 0))
+				ret = -errno;
+		}
 	}
-	ret = glfs_close(fd);
-	if (unlikely(ret < 0))
-		return -errno;
 
-	return 0;
+	XGLFS_FOP_RET;
+	XGLFS_FOP_END;
+
+	return ret;
 }
 

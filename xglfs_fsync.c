@@ -25,7 +25,7 @@
 
 int xglfs_fsync(const char* _path, int _datasync, struct fuse_file_info* _info)
 {
-	debug("%s", __func__);
+	XGLFS_FOP_START;
 
 	(void)_path;
 	int ret = 0;
@@ -35,7 +35,10 @@ int xglfs_fsync(const char* _path, int _datasync, struct fuse_file_info* _info)
 	else
 		ret = glfs_fsync(FH_TO_FD(_info->fh));
 	if (unlikely(ret < 0))
-		return -errno;
+		ret = -errno;
+
+	XGLFS_FOP_RET;
+	XGLFS_FOP_END;
 
 	return ret;
 }

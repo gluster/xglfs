@@ -27,16 +27,21 @@
 
 int xglfs_fgetattr(const char* _path, struct stat* _statbuf, struct fuse_file_info* _info)
 {
-	debug("%s", __func__);
+	XGLFS_FOP_START;
 
 	int ret = 0;
 
 	if (!strcmp(_path, "/"))
-		return xglfs_getattr(_path, _statbuf);
+		ret = xglfs_getattr(_path, _statbuf);
+	else
+	{
+		ret = glfs_fstat(FH_TO_FD(_info->fh), _statbuf);
+		if (unlikely(ret < 0))
+			ret = -errno;
+	}
 
-	ret = glfs_fstat(FH_TO_FD(_info->fh), _statbuf);
-	if (unlikely(ret < 0))
-		return -errno;
+	XGLFS_FOP_RET;
+	XGLFS_FOP_END;
 
 	return ret;
 }
