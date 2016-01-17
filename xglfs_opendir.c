@@ -28,7 +28,7 @@ int xglfs_opendir(const char* _path, struct fuse_file_info* _info)
 	debug("%s", __func__);
 
 	glfs_fd_t* fd = glfs_opendir(XGLFS_STATE->fs, _path);
-	if (!fd)
+	if (unlikely(!fd))
 		return -errno;
 
 	_info->fh = (uint64_t)(uintptr_t)fd;

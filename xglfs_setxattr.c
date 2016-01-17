@@ -30,7 +30,7 @@ int xglfs_setxattr(const char* _path, const char* _name, const char* _value, siz
 	int ret = 0;
 
 	ret = glfs_lsetxattr(XGLFS_STATE->fs, _path, _name, _value, _size, _flags);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return ret;

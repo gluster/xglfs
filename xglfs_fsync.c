@@ -34,7 +34,7 @@ int xglfs_fsync(const char* _path, int _datasync, struct fuse_file_info* _info)
 		ret = glfs_fdatasync((glfs_fd_t*)(uintptr_t)_info->fh);
 	else
 		ret = glfs_fsync((glfs_fd_t*)(uintptr_t)_info->fh);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return ret;

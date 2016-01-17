@@ -31,7 +31,7 @@ int xglfs_write(const char* _path, const char* _buf, size_t _size, off_t _offset
 	int ret = 0;
 
 	ret = glfs_pwrite((glfs_fd_t*)(uintptr_t)_info->fh, _buf, _size, _offset, 0);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return ret;

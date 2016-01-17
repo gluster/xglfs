@@ -33,7 +33,7 @@ int xglfs_utimens(const char* _path, const struct timespec _tv[2])
 	tv[1] = _tv[1];
 
 	ret = glfs_lutimens(XGLFS_STATE->fs, _path, tv);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return ret;

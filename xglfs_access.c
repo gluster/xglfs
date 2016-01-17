@@ -30,7 +30,7 @@ int xglfs_access(const char* _path, int _mask)
 	int ret = 0;
 
 	ret = glfs_access(XGLFS_STATE->fs, _path, _mask);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return ret;

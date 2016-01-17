@@ -31,7 +31,7 @@ int xglfs_release(const char* _path, struct fuse_file_info* _info)
 	int ret = 0;
 
 	ret = glfs_close((glfs_fd_t*)(uintptr_t)_info->fh);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return ret;

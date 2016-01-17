@@ -31,7 +31,7 @@ int xglfs_read(const char* _path, char* _buf, size_t _size, off_t _offset, struc
 	int ret = 0;
 
 	ret = glfs_pread((glfs_fd_t*)(uintptr_t)_info->fh, _buf, _size, _offset, 0);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return ret;

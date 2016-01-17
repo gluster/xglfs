@@ -30,7 +30,7 @@ int xglfs_unlink(const char* _path)
 	int ret = 0;
 
 	ret = glfs_unlink(XGLFS_STATE->fs, _path);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return ret;

@@ -30,7 +30,7 @@ int xglfs_readlink(const char* _path, char* _buf, size_t _bufsize)
 	int ret = 0;
 
 	ret = glfs_readlink(XGLFS_STATE->fs, _path, _buf, _bufsize);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return ret;

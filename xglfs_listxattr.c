@@ -30,7 +30,7 @@ int xglfs_listxattr(const char* _path, char* _list, size_t _size)
 	int ret = 0;
 
 	ret = glfs_llistxattr(XGLFS_STATE->fs, _path, _list, _size);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return ret;

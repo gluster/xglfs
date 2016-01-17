@@ -30,7 +30,7 @@ int xglfs_removexattr(const char* _path, const char* _name)
 	int ret = 0;
 
 	ret = glfs_lremovexattr(XGLFS_STATE->fs, _path, _name);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return ret;

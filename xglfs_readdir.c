@@ -28,14 +28,14 @@ int xglfs_readdir(const char* _path, void* _buf, fuse_fill_dir_t _filler, off_t 
 	debug("%s", __func__);
 
 	struct dirent* de = glfs_readdir((glfs_fd_t*)(uintptr_t)_info->fh);
-	if (!de)
+	if (unlikely(!de))
 		return -errno;
 
 	do
 	{
-		if (_filler(_buf, de->d_name, NULL, 0) != 0)
+		if (unlikely(_filler(_buf, de->d_name, NULL, 0) != 0))
 			return -ENOMEM;
-	} while ((de = glfs_readdir((glfs_fd_t*)(uintptr_t)_info->fh)) != NULL);
+	} while (likely((de = glfs_readdir((glfs_fd_t*)(uintptr_t)_info->fh)) != NULL));
 
 	return 0;
 }

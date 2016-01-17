@@ -35,7 +35,7 @@ int xglfs_fgetattr(const char* _path, struct stat* _statbuf, struct fuse_file_in
 		return xglfs_getattr(_path, _statbuf);
 
 	ret = glfs_fstat((glfs_fd_t*)(uintptr_t)_info->fh, _statbuf);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return ret;

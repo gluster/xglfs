@@ -30,7 +30,7 @@ int xglfs_statfs(const char* _path, struct statvfs* _buf)
 	int ret = 0;
 
 	ret = glfs_statvfs(XGLFS_STATE->fs, _path, _buf);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return ret;

@@ -34,18 +34,18 @@ int xglfs_truncate(const char* _path, off_t _length)
 
 	// Workaround:
 	glfs_fd_t* fd = glfs_open(XGLFS_STATE->fs, _path, O_CREAT | O_WRONLY);
-	if (!fd)
+	if (unlikely(!fd))
 		return -errno;
 
 	ret = glfs_ftruncate(fd, _length);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 	{
 		int saved_errno = errno;
 		glfs_close(fd);
 		return -saved_errno;
 	}
 	ret = glfs_close(fd);
-	if (ret < 0)
+	if (unlikely(ret < 0))
 		return -errno;
 
 	return 0;
