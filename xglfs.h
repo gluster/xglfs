@@ -41,19 +41,20 @@ struct xglfs_state
 #define FH_TO_FD(A)	((glfs_fd_t*)(uintptr_t)(A))
 #define FD_TO_FH(A)	((uint64_t)(uintptr_t)(A))
 
-#define XGLFS_FOP_START												\
-	do																\
-	{																\
-		debug("START: %s\n", __func__);								\
+#define XGLFS_FOP_START							\
+	do											\
+	{											\
+		debug("START: %s\n", __func__);			\
 	} while (0)
-#define XGLFS_FOP_END												\
-	do																\
-	{																\
-		debug("END: %s\n", __func__);								\
+#define XGLFS_FOP_END							\
+	do											\
+	{											\
+		debug("END: %s\n", __func__);			\
 	} while (0)
-#define XGLFS_FOP_RET												\
-	do																\
-	{																\
-		debug("RET: %s = %d (%s)\n", __func__, ret, strerror(ret));	\
+#define XGLFS_FOP_RET							\
+	do											\
+	{											\
+		debug("RET: %s = %d (%s)\n", __func__,	\
+			ret, strerror(ret > 0 ? 0 : -ret));	\
 	} while (0)
 
