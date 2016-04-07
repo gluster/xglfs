@@ -32,13 +32,6 @@ endif ("${CMAKE_C_COMPILER_ID}" STREQUAL "Intel")
 
 set(CMAKE_C_FLAGS_RELEASE "-O3 -march=native -DMODE_NORMAL")
 
-add_subdirectory(pfcquirks)
-add_subdirectory(pfglfsquirks)
-
-include_directories(.
-	pfcquirks
-	pfglfsquirks)
-
 add_executable(xglfs
 	xglfs.c
 	xglfs_access.c
@@ -80,8 +73,6 @@ add_executable(xglfs
 target_link_libraries(xglfs
 	pthread
 	rt
-	ln_pfcquirks
-	ln_pfglfsquirks
 	${GLUSTERFS-API_LIBRARIES}
 	${FUSE_LIBRARIES}
 	${GB_LD_EXTRA})

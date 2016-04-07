@@ -19,23 +19,18 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_ftruncate.h>
+
+#include "xglfs.h"
+#include "xglfs_ftruncate.h"
 
 int xglfs_ftruncate(const char* _path, off_t _offset, struct fuse_file_info* _info)
 {
-	XGLFS_FOP_START;
-
 	(void)_path;
 	int ret = 0;
 
 	ret = glfs_ftruncate(FH_TO_FD(_info->fh), _offset);
 	if (unlikely(ret < 0))
 		ret = -errno;
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

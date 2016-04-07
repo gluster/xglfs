@@ -19,14 +19,12 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_create.h>
+
+#include "xglfs.h"
+#include "xglfs_create.h"
 
 int xglfs_create(const char* _path, mode_t _mode, struct fuse_file_info* _info)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
 	glfs_fd_t* fd = glfs_creat(XGLFS_STATE->fs, _path, O_CREAT | O_WRONLY | O_TRUNC, _mode);
@@ -35,9 +33,6 @@ int xglfs_create(const char* _path, mode_t _mode, struct fuse_file_info* _info)
 
 	if (likely(ret == 0))
 		_info->fh = FD_TO_FH(fd);
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

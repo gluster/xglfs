@@ -19,14 +19,12 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_utimens.h>
+
+#include "xglfs.h"
+#include "xglfs_utimens.h"
 
 int xglfs_utimens(const char* _path, const struct timespec _tv[2])
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 	struct timespec tv[2];
 	tv[0] = _tv[0];
@@ -35,9 +33,6 @@ int xglfs_utimens(const char* _path, const struct timespec _tv[2])
 	ret = glfs_lutimens(XGLFS_STATE->fs, _path, tv);
 	if (unlikely(ret < 0))
 		ret = -errno;
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

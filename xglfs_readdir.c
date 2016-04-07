@@ -19,14 +19,12 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_readdir.h>
+
+#include "xglfs.h"
+#include "xglfs_readdir.h"
 
 int xglfs_readdir(const char* _path, void* _buf, fuse_fill_dir_t _filler, off_t _offset, struct fuse_file_info* _info)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
 	struct dirent* de = glfs_readdir(FH_TO_FD(_info->fh));
@@ -44,9 +42,6 @@ int xglfs_readdir(const char* _path, void* _buf, fuse_fill_dir_t _filler, off_t 
 			}
 		} while (likely((de = glfs_readdir(FH_TO_FD(_info->fh))) != NULL));
 	}
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

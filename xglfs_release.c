@@ -19,23 +19,18 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_release.h>
+
+#include "xglfs.h"
+#include "xglfs_release.h"
 
 int xglfs_release(const char* _path, struct fuse_file_info* _info)
 {
-	XGLFS_FOP_START;
-
 	(void)_path;
 	int ret = 0;
 
 	ret = glfs_close(FH_TO_FD(_info->fh));
 	if (unlikely(ret < 0))
 		ret = -errno;
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

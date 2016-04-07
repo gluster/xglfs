@@ -19,22 +19,17 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_access.h>
+
+#include "xglfs.h"
+#include "xglfs_access.h"
 
 int xglfs_access(const char* _path, int _mask)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
 	ret = glfs_access(XGLFS_STATE->fs, _path, _mask);
 	if (unlikely(ret < 0))
 		ret = -errno;
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

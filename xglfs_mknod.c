@@ -19,22 +19,17 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_mknod.h>
+
+#include "xglfs.h"
+#include "xglfs_mknod.h"
 
 int xglfs_mknod(const char* _path, mode_t _mode, dev_t _dev)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
 	ret = glfs_mknod(XGLFS_STATE->fs, _path, _mode, _dev);
 	if (unlikely(ret < 0))
 		ret = -errno;
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

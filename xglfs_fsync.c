@@ -19,14 +19,12 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_fsync.h>
+
+#include "xglfs.h"
+#include "xglfs_fsync.h"
 
 int xglfs_fsync(const char* _path, int _datasync, struct fuse_file_info* _info)
 {
-	XGLFS_FOP_START;
-
 	(void)_path;
 	int ret = 0;
 
@@ -36,9 +34,6 @@ int xglfs_fsync(const char* _path, int _datasync, struct fuse_file_info* _info)
 		ret = glfs_fsync(FH_TO_FD(_info->fh));
 	if (unlikely(ret < 0))
 		ret = -errno;
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

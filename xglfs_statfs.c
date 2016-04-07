@@ -19,22 +19,17 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_statfs.h>
+
+#include "xglfs.h"
+#include "xglfs_statfs.h"
 
 int xglfs_statfs(const char* _path, struct statvfs* _buf)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
 	ret = glfs_statvfs(XGLFS_STATE->fs, _path, _buf);
 	if (unlikely(ret < 0))
 		ret = -errno;
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

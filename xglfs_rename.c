@@ -19,22 +19,17 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_rename.h>
+
+#include "xglfs.h"
+#include "xglfs_rename.h"
 
 int xglfs_rename(const char* _oldpath, const char* _newpath)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
 	ret = glfs_rename(XGLFS_STATE->fs, _oldpath, _newpath);
 	if (unlikely(ret < 0))
 		ret = -errno;
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

@@ -17,24 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_fsyncdir.h>
+
+#include "xglfs.h"
+#include "xglfs_fsyncdir.h"
 
 int xglfs_fsyncdir(const char* _path, int _datasync, struct fuse_file_info* _info)
 {
-	XGLFS_FOP_START;
-
-	// TODO: WTF?
 	(void)_path;
 	(void)_datasync;
 	(void)_info;
 	int ret = 0;
 
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
+	/* TODO: Nothing here. Yet? */
 
 	return ret;
 }

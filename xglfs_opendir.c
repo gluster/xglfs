@@ -19,14 +19,12 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_opendir.h>
+
+#include "xglfs.h"
+#include "xglfs_opendir.h"
 
 int xglfs_opendir(const char* _path, struct fuse_file_info* _info)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
 	glfs_fd_t* fd = glfs_opendir(XGLFS_STATE->fs, _path);
@@ -35,9 +33,6 @@ int xglfs_opendir(const char* _path, struct fuse_file_info* _info)
 
 	if (likely(ret == 0))
 		_info->fh = FD_TO_FH(fd);
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

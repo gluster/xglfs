@@ -17,29 +17,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_destroy.h>
+#include <stdlib.h>
+
+#include "xglfs.h"
+#include "xglfs_destroy.h"
 
 void xglfs_destroy(void* _userdata)
 {
-	XGLFS_FOP_START;
-
 	glfs_fini(XGLFS_STATE->fs);
 
-	pfcq_free(XGLFS_STATE->protocol);
-	pfcq_free(XGLFS_STATE->server);
-	pfcq_free(XGLFS_STATE->volume);
-	pfcq_free(XGLFS_STATE->glfs_logfile);
+	free(XGLFS_STATE->protocol);
+	free(XGLFS_STATE->server);
+	free(XGLFS_STATE->volume);
+	free(XGLFS_STATE->glfs_logfile);
 
 	struct xglfs_state* xglfs_state = XGLFS_STATE;
-	pfcq_free(xglfs_state);
-
-	pfcq_debug_done();
-
-	XGLFS_FOP_END;
+	free(xglfs_state);
 
 	return;
 }

@@ -19,20 +19,17 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_flush.h>
+
+#include "xglfs.h"
+#include "xglfs_flush.h"
 
 int xglfs_flush(const char* _path, struct fuse_file_info* _info)
 {
-	XGLFS_FOP_START;
-
 	(void)_path;
 	(void)_info;
 	int ret = 0;
 
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
+	/* TODO: Nothing here. Yet? */
 
 	return ret;
 }

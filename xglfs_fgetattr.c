@@ -19,16 +19,14 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
 #include <string.h>
-#include <xglfs.h>
-#include <xglfs_fgetattr.h>
-#include <xglfs_getattr.h>
+
+#include "xglfs.h"
+#include "xglfs_fgetattr.h"
+#include "xglfs_getattr.h"
 
 int xglfs_fgetattr(const char* _path, struct stat* _statbuf, struct fuse_file_info* _info)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
 	if (!strcmp(_path, "/"))
@@ -39,9 +37,6 @@ int xglfs_fgetattr(const char* _path, struct stat* _statbuf, struct fuse_file_in
 		if (unlikely(ret < 0))
 			ret = -errno;
 	}
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

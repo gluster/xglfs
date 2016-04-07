@@ -19,14 +19,12 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_lock.h>
+
+#include "xglfs.h"
+#include "xglfs_lock.h"
 
 int xglfs_lock(const char* _path, struct fuse_file_info* _info, int _cmd, struct flock* _flock)
 {
-	XGLFS_FOP_START;
-
 	(void)_path;
 
 	int ret = 0;
@@ -34,9 +32,6 @@ int xglfs_lock(const char* _path, struct fuse_file_info* _info, int _cmd, struct
 	ret = glfs_posix_lock(FH_TO_FD(_info->fh), _cmd, _flock);
 	if (unlikely(ret < 0))
 		ret = -errno;
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

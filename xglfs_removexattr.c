@@ -19,22 +19,17 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_removexattr.h>
+
+#include "xglfs.h"
+#include "xglfs_removexattr.h"
 
 int xglfs_removexattr(const char* _path, const char* _name)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
 	ret = glfs_lremovexattr(XGLFS_STATE->fs, _path, _name);
 	if (unlikely(ret < 0))
 		ret = -errno;
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

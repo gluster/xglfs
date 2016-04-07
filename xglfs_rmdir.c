@@ -19,22 +19,17 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_rmdir.h>
+
+#include "xglfs.h"
+#include "xglfs_rmdir.h"
 
 int xglfs_rmdir(const char* _path)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
 	ret = glfs_rmdir(XGLFS_STATE->fs, _path);
 	if (unlikely(ret < 0))
 		ret = -errno;
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

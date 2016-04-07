@@ -19,14 +19,12 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_readlink.h>
+
+#include "xglfs.h"
+#include "xglfs_readlink.h"
 
 int xglfs_readlink(const char* _path, char* _buf, size_t _bufsize)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
 	ret = glfs_readlink(XGLFS_STATE->fs, _path, _buf, _bufsize);
@@ -37,9 +35,6 @@ int xglfs_readlink(const char* _path, char* _buf, size_t _bufsize)
 		_buf[ret] = '\0';
 		ret = 0;
 	}
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

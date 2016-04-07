@@ -19,22 +19,17 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_chown.h>
+
+#include "xglfs.h"
+#include "xglfs_chown.h"
 
 int xglfs_chown(const char* _path, uid_t _owner, gid_t _group)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
 	ret = glfs_chown(XGLFS_STATE->fs, _path, _owner, _group);
 	if (unlikely(ret < 0))
 		ret = -errno;
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

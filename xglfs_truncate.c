@@ -19,20 +19,23 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_truncate.h>
+
+#include "xglfs.h"
+#include "xglfs_truncate.h"
 
 int xglfs_truncate(const char* _path, off_t _length)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
-	// Unexpectedly, no :)
-	// return glfs_truncate(XGLFS_STATE->fs, _path, _length);
+	/*
+		return glfs_truncate(XGLFS_STATE->fs, _path, _length);
 
-	// Workaround:
+		I thought so. But, unexpectedly, it does not work
+		because glfs_truncate() is not provided by GlusterFS libraries.
+
+		Workaround goes below.
+	*/
+
 	glfs_fd_t* fd = glfs_open(XGLFS_STATE->fs, _path, O_CREAT | O_WRONLY);
 	if (unlikely(!fd))
 		ret = -errno;
@@ -52,9 +55,6 @@ int xglfs_truncate(const char* _path, off_t _length)
 				ret = -errno;
 		}
 	}
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

@@ -19,22 +19,17 @@
 
 #include <errno.h>
 #include <glusterfs/api/glfs.h>
-#include <pfcq.h>
-#include <xglfs.h>
-#include <xglfs_chmod.h>
+
+#include "xglfs.h"
+#include "xglfs_chmod.h"
 
 int xglfs_chmod(const char* _path, mode_t _mode)
 {
-	XGLFS_FOP_START;
-
 	int ret = 0;
 
 	ret = glfs_chmod(XGLFS_STATE->fs, _path, _mode);
 	if (unlikely(ret < 0))
 		ret = -errno;
-
-	XGLFS_FOP_RET;
-	XGLFS_FOP_END;
 
 	return ret;
 }

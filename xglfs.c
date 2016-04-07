@@ -19,13 +19,13 @@
 
 #include <errno.h>
 #include <fuse.h>
-#include <pfcq.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sysexits.h>
-#include <xglfs.h>
-#include <xglfs_fops.h>
+
+#include "xglfs.h"
+#include "xglfs_fops.h"
 
 struct fuse_operations xglfs_ops =
 {
@@ -71,8 +71,8 @@ struct fuse_operations xglfs_ops =
 
 __attribute__((noreturn)) static void xglfs_usage(void)
 {
-	fprintf(stderr, "Usage: xglfs <[tcp|udp]:server:[port]:volume:[GlusterFS_logfile]:[GlusterFS_verbosity]:[verbose]:[debug]:[syslog]:[foreground]> <mountpoint>\n");
-	fprintf(stderr, "Example: xglfs :glusterfs.example.com::bigvolume:::::1: /mnt/bigvolume\n");
+	fprintf(stderr, "Usage: xglfs <[tcp|udp]:server:[port]:volume:[GlusterFS_logfile]:[GlusterFS_verbosity]:[foreground]> <mountpoint>\n");
+	fprintf(stderr, "Example: xglfs :glusterfs.example.com::bigvolume::: /mnt/bigvolume\n");
 	exit(EX_USAGE);
 }
 
@@ -87,77 +87,59 @@ int main(int _argc, char** _argv)
 	if (_argc != 3)
 		xglfs_usage();
 
-	struct xglfs_state* xglfs_state = pfcq_alloc(sizeof(struct xglfs_state));
+	struct xglfs_state* xglfs_state = calloc(1, sizeof(struct xglfs_state));
 
-	char* source_i = pfcq_strdup(_argv[1]);
+	char* source_i = strdup(_argv[1]);
 	char* source_p = source_i;
 
 	char* protocol = strsep(&source_i, ":");
 	if (strcmp(protocol, "") == 0)
-		xglfs_state->protocol = pfcq_strdup(GLFS_DEFAULT_PROTOCOL);
+		xglfs_state->protocol = strdup(GLFS_DEFAULT_PROTOCOL);
 	else
 	{
 		if (strcmp(protocol, "tcp") != 0 && strcmp(protocol, "udp") != 0)
 			xglfs_usage();
 		else
-			xglfs_state->protocol = pfcq_strdup(protocol);
+			xglfs_state->protocol = strdup(protocol);
 	}
 
 	char* server = strsep(&source_i, ":");
 	if (strcmp(server, "") == 0)
 		xglfs_usage();
-	xglfs_state->server = pfcq_strdup(server);
+	xglfs_state->server = strdup(server);
 
 	char* port = strsep(&source_i, ":");
 	if (strcmp(port, "") == 0)
 		xglfs_state->port = GLFS_DEFAULT_PORT;
 	else
 	{
-		if (!pfcq_isnumber(port))
+		char* invalid = NULL;
+		xglfs_state->port = strtol(port, &invalid, 10);
+		if (invalid)
 			xglfs_usage();
-		else
-			xglfs_state->port = strtol(port, NULL, 10);
 	}
 
 	char* volume = strsep(&source_i, ":");
 	if (strcmp(volume, "") == 0)
 		xglfs_usage();
-	xglfs_state->volume = pfcq_strdup(volume);
+	xglfs_state->volume = strdup(volume);
 
 	char* glfs_logfile = strsep(&source_i, ":");
 	if (strcmp(glfs_logfile, "") == 0)
-		xglfs_state->glfs_logfile = pfcq_strdup(DEV_NULL);
+		xglfs_state->glfs_logfile = strdup(DEV_NULL);
 	else
-		xglfs_state->glfs_logfile = pfcq_strdup(glfs_logfile);
+		xglfs_state->glfs_logfile = strdup(glfs_logfile);
 
 	char* glfs_verbosity = strsep(&source_i, ":");
 	if (strcmp(glfs_verbosity, "") == 0)
 		xglfs_state->glfs_verbosity = GLFS_DEFAULT_VERBOSITY;
 	else
 	{
-		if (!pfcq_isnumber(glfs_verbosity))
+		char* invalid = NULL;
+		xglfs_state->glfs_verbosity = strtol(glfs_verbosity, &invalid, 10);
+		if (invalid)
 			xglfs_usage();
-		else
-			xglfs_state->glfs_verbosity = strtol(glfs_verbosity, NULL, 10);
 	}
-
-	char* be_verbose = strsep(&source_i, ":");
-	if (strcmp(be_verbose, "") == 0)
-		xglfs_state->verbose = 0;
-	else
-		xglfs_state->verbose = 1;
-
-	char* do_debug = strsep(&source_i, ":");
-	if (strcmp(do_debug, "") == 0)
-		xglfs_state->debug = 0;
-	else
-		xglfs_state->debug = 1;
-
-	char* use_syslog = strsep(&source_i, ":");
-	if (strcmp(use_syslog, "") == 0)
-		xglfs_state->syslog = 0;
-	else
-		xglfs_state->syslog = 1;
 
 	unsigned short int foreground = 0;
 	char* stay_foreground = strsep(&source_i, ":");
@@ -166,15 +148,15 @@ int main(int _argc, char** _argv)
 	else
 		foreground = 1;
 
-	pfcq_free(source_p);
+	free(source_p);
 
-	char** args = pfcq_alloc((foreground + 3) * sizeof(char*));
+	char** args = calloc(foreground + 3, sizeof(char*));
 	size_t index = 0;
-	args[index++] = pfcq_strdup(_argv[0]);
-	args[index++] = pfcq_strdup("-orw,suid,dev,direct_io,allow_other,default_permissions");
+	args[index++] = strdup(_argv[0]);
+	args[index++] = strdup("-orw,suid,dev,direct_io,allow_other,default_permissions");
 	if (foreground)
-		args[index++] = pfcq_strdup("-f");
-	args[index++] = pfcq_strdup(_argv[2]);
+		args[index++] = strdup("-f");
+	args[index++] = strdup(_argv[2]);
 
 	exit(fuse_main(index, args, &xglfs_ops, xglfs_state));
 }
