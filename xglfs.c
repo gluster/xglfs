@@ -115,7 +115,7 @@ int main(int _argc, char** _argv)
 	{
 		char* invalid = NULL;
 		xglfs_state->port = strtol(port, &invalid, 10);
-		if (invalid)
+		if (*invalid != '\0')
 			xglfs_usage();
 	}
 
@@ -137,7 +137,7 @@ int main(int _argc, char** _argv)
 	{
 		char* invalid = NULL;
 		xglfs_state->glfs_verbosity = strtol(glfs_verbosity, &invalid, 10);
-		if (invalid)
+		if (*invalid != '\0')
 			xglfs_usage();
 	}
 
