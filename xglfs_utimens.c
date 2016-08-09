@@ -30,7 +30,7 @@ int xglfs_utimens(const char* _path, const struct timespec _tv[2])
 	/*
 	 * Copy is needed to remove const qualifier.
 	 * Probably, this is a bug in GFAPI.
-	 * glfs_lutimes() should declare 3rd argument as const.
+	 * glfs_lutimens() should declare 3rd argument as const.
 	 */
 	struct timespec tv[2];
 	tv[0] = _tv[0];
