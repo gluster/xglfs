@@ -86,3 +86,6 @@ target_link_libraries(xglfs
 install(TARGETS xglfs
 	RUNTIME DESTINATION bin)
 
+install(PROGRAMS scripts/mount.xglfs
+	DESTINATION sbin)
+

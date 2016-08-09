@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Helper to mount xglfs from /etc/fstab.  To use, add an entry like:
+
+# # DEVICE                           PATH         TYPE        OPTIONS
+# glusterfs.example.com:bigdata      /mnt/bigdata xglfs       defaults   0 0
+
+set -e
+
+server=`echo $1 | cut -d ':' -f 1`
+volume=`echo $1 | cut -d ':' -f 2`
+mountpoint=$2
+
+/usr/bin/xglfs --server=$server --volume=$volume --mountpoint=$mountpoint
+
