@@ -28,12 +28,10 @@ int xglfs_truncate(const char* _path, off_t _length)
 	int ret = 0;
 
 	/*
-		return glfs_truncate(XGLFS_STATE->fs, _path, _length);
-
-		I thought so. But, unexpectedly, it does not work
-		because glfs_truncate() is not provided by GlusterFS libraries.
-
-		Workaround goes below.
+	 * glfs_truncate() is still missing.
+	 * See http://review.gluster.org/#/c/13927/
+	 *
+	 * The code below is considered to be temporary workaround.
 	*/
 
 	glfs_fd_t* fd = glfs_open(XGLFS_STATE->fs, _path, O_CREAT | O_WRONLY);
