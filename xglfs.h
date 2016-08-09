@@ -27,6 +27,7 @@
 #define GLFS_DEFAULT_PROTOCOL	"tcp"
 #define GLFS_DEFAULT_VERBOSITY	7
 #define DEV_NULL				"/dev/null"
+#define DEV_STDERR				"/dev/stderr"
 
 #ifdef __GNUC__
 #define likely(x)				__builtin_expect(!!(x), 1)
@@ -43,6 +44,7 @@ struct xglfs_state
 	char* server;
 	int port;
 	char* volume;
+	char* mountpoint;
 	char* glfs_logfile;
 	int glfs_verbosity;
 };

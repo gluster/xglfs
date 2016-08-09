@@ -17,12 +17,12 @@ Compiling
 
 ### Prerequisites
 
-* Linux (tested with 4.4.5)
-* cmake (tested with 3.5.1)
-* make (tested with GNU Make 4.1)
-* gcc (tested with 5.3.0), clang (tested with 3.7.1) or ICC (tested with 16.0.2)
-* FUSE (tested with 2.9.5)
-* glusterfs-api (tested with 7.3.7.9)
+* Linux (tested with 4.7.0)
+* cmake (tested with 3.6.1)
+* make (tested with GNU Make 4.2.1)
+* gcc (tested with 6.1.1), clang (tested with 3.8.1) or ICC (tested with 16.0.3)
+* FUSE (tested with 2.9.7)
+* glusterfs-api (tested with 7.3.8.1)
 
 ### Compiling
 
@@ -41,11 +41,11 @@ Usage
 
 Syntax:
 
-`xglfs <[tcp|udp]:server:[port]:volume:[GlusterFS_logfile]:[GlusterFS_verbosity]:[foreground]> <mountpoint>`
+`xglfs --server=<IP|DOMAIN> --volume=VOLUME --mountpoint=MOUNTPOINT [--protocol=<tcp|udp>] [--port=24007] [--logfile=<file|stderr|null>] [--verbosity=7] [--foreground]`
 
 Typical usage:
 
-`xglfs :glusterfs.example.com::bigvolume:::1 /mnt/bigvolume`
+`xglfs --server=glusterfs.example.com --volume=bigdata --mountpoint=/mnt/bigdata`
 
 Distribution and Contribution
 -----------------------------

@@ -30,6 +30,7 @@ void xglfs_destroy(void* _userdata)
 	free(XGLFS_STATE->protocol);
 	free(XGLFS_STATE->server);
 	free(XGLFS_STATE->volume);
+	free(XGLFS_STATE->mountpoint);
 	free(XGLFS_STATE->glfs_logfile);
 
 	struct xglfs_state* xglfs_state = XGLFS_STATE;
